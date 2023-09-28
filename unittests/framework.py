@@ -32,6 +32,11 @@ def run_venus(filename: str, check_calling_convention: bool = True, extra_flags:
         if extra_flags is not None: cmd += extra_flags
         cmd += [filename]
         if args is not None: cmd += args
+        
+        #Debug
+        #print("Debug::run_venus()")
+        #print("Done!")
+
         if verbose: print("Executing: " +" ".join(str(c) for c in cmd))
         r = subprocess.run(cmd, stdout=subprocess.PIPE, cwd=_root_dir, stderr=subprocess.PIPE)
         try:
@@ -361,6 +366,16 @@ class AssemblyTest:
 
         if verbose: print()
         filename = save_assembly(self.name, '\n'.join(lines), verbose=verbose)
+
+        #Debug
+        #print("\nDebug:")
+        #if args is None:
+        #    print("args is None")
+        #else:
+        #    for s in args:
+        #        print(s + " ")
+        #print("Done!")
+
         r, coverage = run_venus(filename, self.check_calling_convention, defines, args, verbose=verbose)
         _process_coverage(coverage, self._assembly)
         self._program_executed = True

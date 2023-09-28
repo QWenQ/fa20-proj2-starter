@@ -20,25 +20,31 @@
 dot:
 
     # Prologue
+    # addi sp, sp, -4
+    # sw ra, 0(sp)
 
 
 loop_start:
+    addi t0, x0, 0  # t0 -> dot product
+    addi t1, x0, 0  # t1 -> int i = 0
 
-
-
-
-
-
-
-
-
-
-
+loop_continue:
+    bge t1, a2, loop_end
+    lw t2, 0(a0)    # t2 -> *(vec1)
+    lw t3, 0(a1)    # t3 -> *(vec2)
+    mul t3, t2, t3  # product = *(vec1) * *(vec2)
+    add t0, t0, t3
+    addi t1, t1, 1
+    slli t2, a3, 2  # t2 -> stride to next element 
+    slli t3, a4, 2  # t3 -> stride to next element
+    add a0, a0, t2
+    add a1, a1, t3
+    j loop_continue
 
 loop_end:
-
-
+    mv a0, t0   # a0 -> dot product
     # Epilogue
-
+    # lw ra, 0(sp)
+    # addi sp, sp, 4
     
     ret
